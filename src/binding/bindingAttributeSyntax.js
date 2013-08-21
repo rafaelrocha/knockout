@@ -272,6 +272,11 @@
             ko.utils.domData.set(node, boundElementDomDataKey, true);
         }
 
+        // Ensure we have a nonnull binding context to work with
+        if (ko.bindingProvider.instance.getBindings) {
+            ko.bindingProvider.instance.getBindings(node, bindingContext);
+        }
+
         // Optimization: Don't store the binding context on this node if it's definitely the same as on node.parentNode, because
         // we can easily recover it just by scanning up the node's ancestors in the DOM
         // (note: here, parent node means "real DOM parent" not "virtual parent", as there's no O(1) way to find the virtual parent)

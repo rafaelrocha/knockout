@@ -58,6 +58,21 @@ describe('Binding attribute syntax', function() {
         }
     });
 
+    it('applyBindings should raise a detailed exception when parameter viewModelOrBindingContext is an empty object', function() {
+        testNode.innerHTML = "<div id='testElement' data-bind='text: dummy'></div>";
+                
+        var detailedException;
+        try {
+            ko.applyBindings({}, testNode);
+        } catch (ex) {
+            detailedException = ex;
+        }
+
+        var expectedDetailedMessage = "Unable to parse bindings.\nBindings value: text: dummy\nMessage: dummy is not defined";
+        expect(detailedException).toBeDefined();
+        expect(detailedException.message).toEqual(expectedDetailedMessage);
+    });
+
     it('Should tolerate empty or only white-space binding strings', function() {
         testNode.innerHTML = "<div data-bind=''></div><div data-bind='   '></div>";
         ko.applyBindings(null, testNode); // No exception means success
